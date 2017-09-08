@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>TODO LIST</title>
+    <style type="text/css">
+    .tl-list {
+        margin: 15px;
+        padding: 30px;
+        list-style: none;
+        font-size: 1.5em;
+        background: #fff;
+        border: 1px solid #eee;
+        box-shadow: 1px 0 5px 0 rgba(100, 100, 100, 0.5);
+    }
+
+    .tl-item {
+        border-bottom: 1px solid #eee;
+        padding: 15px 0;
+    }
+
+    .tl-item.tl-done {
+        text-decoration: line-through;
+        opacity: 0.4;
+    }
+
+    .tl-list .tl-text {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .tl-list .tl-date {
+        font-size: 0.5em;
+        color: #888;
+    }
+    </style>
+</head>
+
+<body>
+    <ul id="myTodoList" class="tl-list">
+        <li class="tl-item">
+            <span class="tl-text"></span>
+            <span class="tl-date"></span>
+        </li>
+    </ul>
+    <script>
+    // item class
+    var TodoListItem = function(text) {
+        this.text = text;
+        this.done = false;
+        this.date = new Date();
+    };
+
+    TodoListItem.prototype.toggle = function() {
+        this.done = !this.done;
+        return this;
+    };
+
+    // list class
+    var TodoList = function(view) {
+        // data
+        this.items = [];
+
+        // view
+        this.view = view;
+        this.itemView = document.importNode(view.querySelectorAll(this.className.item)[0], true);
+        this.render();
+
+        // data-view
+        var self = this;
+        this.view.addEventListener('click', function(e) {
+            var itemView = e.target.closest('.' + self.className.item);
+            if (itemView) {
+                itemView.itemObject.toggle();
+                self.render();
+            }
+        });
+    };
+
+    TodoList.prototype.className = {
+        item: 'tl-item',
+        itemText: 'tl-text',
+        itemDate: 'tl-date',
+        itemDone: 'tl-done'
+    };
+
+    TodoList.prototype.addItem = function(text) {
+        var item = new TodoListItem(text);
+        this.items.push(item);
+        return this;
+    };
+
+    // rendering
+    TodoList.prototype.render = function() {
+
+        var itemViews = this.view.querySelectorAll(this.className.item);
+        while (itemViews.length > 0)
+            this.view.removeChild(itemViews[itemViews.length - 1]);
+
+        for (var i = 0; i < this.items.length; i++) {
+            var item = this.items[i];
+            var itemView = document.importNode(this.itemView, true);
+            itemView.querySelectorAll(this.className.itemText)[0].innerHTML = item.text;
+            itemView.querySelectorAll(this.className.itemDate)[0].innerHTML = item.date;
+
+            if (item.done)
+                itemView.classList.add(this.className.itemDone);
+
+            // data-view
+            itemView.itemObject = item;
+
+            this.view.appendChild(itemView);
+        };
+
+        return this;
+    };
+
+    var myView = document.getElementById("myTodoList");
+    var list = new TodoList(myView);
+    list
+        .addItem("테스트1").addItem("테스트2").addItem("테스트3")
+        .render();
+    </script>
+</body>
+
+</html>
