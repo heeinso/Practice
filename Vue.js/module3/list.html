@@ -6,8 +6,17 @@
 <body>
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <div id="app">
+        <template v-for="(ingredient, index) in ingredients">
+            <h1>{{ ingredient }}</h1>
+            <p>{{ index }}</p>
+        </template>
+        <hr>
         <ul>
-            <li v-for="ingredient in ingredients">{{ ingredient }}</li>
+            <li v-for="person in persons">
+                <div v-for="(value, key, index) in person">
+                    {{ key }}: {{ value }} ({{ index }})
+                </div>
+            </li>
         </ul>
     </div>
     <script type="text/javascript">
