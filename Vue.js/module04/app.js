@@ -28,6 +28,37 @@ new Vue({
             this.monsterAttacks();
         },
 
+        specialAttack: function() {
+          var damage = this.calculateDamage(10, 20);
+          this.monsterHealth -= damage;
+          this.turns.unshift({
+              isPlayer: true,
+              text: 'Player hits Monster for ' + damage
+          });
+          if (this.checkWin()) {
+              return;
+          }
+
+          this.monsterAttacks();
+        },
+
+        heal: function () {
+          if (this.playerHealth <= 90) {
+              this.playerHealth += 10;
+          } else {
+              this.playerHealth = 100;
+          }
+          this.turns.unshift({
+              isPlayer: true,
+              text: 'Player heals for 10'
+          });
+          this.monsterAttacks();
+        },
+
+        giveUp: function() {
+            this.gameIsRunning = false;
+        },
+
         monsterAttacks: function() {
             var damage = this.calculateDamage(5, 12);
             this.playerHealth -= damage;
