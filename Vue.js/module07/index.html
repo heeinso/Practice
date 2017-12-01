@@ -11,10 +11,36 @@
     <hr>
     <my-cmp></my-cmp>
   </div>
+
+  <div id="app2">
+    <my-cmp></my-cmp>
+    <hr>
+    <my-cmp></my-cmp>
+  </div>
   <script>
 //    var data = {status: 'Critical'};
 
-    Vue.component('my-cmp', {
+// Register components globally
+//    Vue.component('my-cmp', {
+//        data: function() {
+//            return {
+//                status: 'Critical'
+//            }
+//        },
+//
+//        template: '<p>Server Status: {{ status }} ' +
+//        '<button @click="changeStatus">Change</button></p>',
+//
+//        methods: {
+//            changeStatus: function() {
+//                this.status = 'Normal';
+//            }
+//        }
+//
+//    });
+
+// Register components locally
+    var cmp = {
         data: function() {
             return {
                 status: 'Critical'
@@ -30,10 +56,13 @@
             }
         }
 
-    });
+    };
 
     new Vue({
-        el: '#app'
+        el: '#app',
+        components: {
+            'my-cmp': cmp
+        }
     })
   </script>
 </body>
