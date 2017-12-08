@@ -10,7 +10,6 @@
       </div>
     </form>
   </div>
-
 </template>
 
 <script>
@@ -20,7 +19,6 @@
         quote: ''
       };
     },
-
     methods: {
       createNew() {
         this.$emit('quoteAdded', this.quote);

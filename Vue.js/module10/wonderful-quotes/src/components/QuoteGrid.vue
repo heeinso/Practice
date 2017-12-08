@@ -9,11 +9,9 @@
 
   export default {
     props: ['quotes'],
-
     components: {
       appQuote: Quote
     },
-
     methods: {
       deleteQuote(index) {
         this.$emit('quoteDeleted', index);
