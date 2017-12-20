@@ -5,23 +5,28 @@
         <h1>Filters & Mixins</h1>
         <p>{{ text | toUppercase | to-lowercase }}</p>
         <hr>
+        <button @click="fruits.push('Berries')">Add New Item</button>
         <input v-model="filterText">
         <hr>
         <ul>
           <li v-for="fruit in filteredFruits">{{ fruit }}</li>
         </ul>
+        <hr>
+        <app-list></app-list>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import List from './List.vue';
+  import { fruitMixin } from './fruitMixin'
+
   export default {
+    mixins: [fruitMixin],
     data() {
       return {
         text: "Hello there!",
-        fruits: ['Apple', 'Banana', 'Mango', 'Melon'],
-        filterText: ''
       }
     },
     filters: {
@@ -35,6 +40,9 @@
           return element.match(this.filterText);
         })
       }
+    },
+    components: {
+      appList: List
     }
   }
 </script>
