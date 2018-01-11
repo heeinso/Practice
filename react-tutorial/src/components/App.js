@@ -1,27 +1,18 @@
 import React from 'react';
+import Header from './Header';
+import Content from './Content';
 
 class App extends React.Component {
-  sayHey() {
-    alert("hey");
-  }
 
-  render() {
-    let text = "dev-server";
-
-    let pStyle = {
-      color: 'aqua',
-      backgroundColor: 'black'
-    };
-
+  render(){
     return (
       <div>
-        <h1>Hello React!</h1>
-        <h2>Welcome to {text}</h2>
-        <button onClick={this.sayHey}>Click me</button>
-        <p style={pStyle}>{1 == 1 ? 'True' : 'False'}</p>
+        <Header/>
+        <Content/>
       </div>
     );
   }
 }
+
 
 export default App;
