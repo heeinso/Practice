@@ -14,12 +14,14 @@ class SongList extends Component {
   }
 
   render() {
-    if (this.props.data.loading) return <div>Loading...</div>;
+    if (this.props.data.loading) {
+      return <div>Loading...</div>;
+    }
 
     return (
-    <ul className="collection">
-      SongList
-    </ul>
+      <ul className="collection">
+        {this.renderSongs()}
+      </ul>
     );
   }
 }
