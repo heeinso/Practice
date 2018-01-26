@@ -1,15 +1,15 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 class LyricList extends Component {
-  // renderLyrics() {
-  //   return this.props.lyrics.map(({id, content}) => {
-  //     return (
-  //       <li key={id} className="collection-item">
-  //         {content}
-  //       </li>
-  //     );
-  //   });
-  // }
+  renderLyrics() {
+    return this.props.lyrics.map(({ id, content }) => {
+      return (
+        <li key={id} className="collection-item">
+          {content}
+        </li>
+      );
+    });
+  }
 
   render() {
     return (
@@ -19,3 +19,5 @@ class LyricList extends Component {
     );
   }
 }
+
+export default LyricList;
