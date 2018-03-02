@@ -25,7 +25,7 @@ class LinkList extends Component {
     votedLink.votes = createVote.link.votes
 
     store.writeQuery({query: FEED_QUERY, data})
-  }
+  };
 
   _subscribeToNewLinks = () => {
     this.props.feedQuery.subscribeToMore({
@@ -58,14 +58,49 @@ class LinkList extends Component {
           feed: {
             links: newAllLinks
           },
-        }
+        };
         return result
       },
     })
-  }
+  };
+
+
+  _subscribeToNewVotes = () => {
+    this.props.feedQuery.subscribeToMore({
+      document: gql`
+        subscription {
+          newVote {
+            node {
+              id
+              link {
+                id
+                url
+                description
+                createdAt
+                postedBy {
+                  id
+                  name
+                }
+                votes {
+                  id
+                  user {
+                    id
+                  }
+                }
+              }
+              user {
+                id
+              }
+            }
+          }
+        }
+      `
+    })
+  };
 
   componentDidMount() {
-    this._subscribeToNewLinks()
+    this._subscribeToNewLinks();
+    this._subscribeToNewVotes();
   }
 }
 
