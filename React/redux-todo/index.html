@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Todos & Goals</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="style.css">
   <script src='https://cdnjs.cloudflare.com/ajax/libs/redux/3.7.2/redux.min.js'></script>
   <script src='https://unpkg.com/react@16.3.0-alpha.1/umd/react.development.js'></script>
   <script src='https://unpkg.com/react-dom@16.3.0-alpha.1/umd/react-dom.development.js'></script>
@@ -110,6 +111,15 @@
       }
     }
 
+    function loading(state = true, action) {
+      switch (action.type) {
+        case RECEIVE_DATA:
+          return false;
+        default:
+          return state;
+      }
+    }
+
     const checker = (store) => (next) => (action) => {
       if (
         action.type === ADD_TODO &&
@@ -139,6 +149,7 @@
       Redux.combineReducers({
         todos,
         goals,
+        loading,
       }), Redux.applyMiddleware(checker, logger)
     );
 
@@ -251,7 +262,13 @@
       }
       render() {
         const {store} = this.props;
-        const {todos, goals} = store.getState();
+        const {todos, goals, loading} = store.getState();
+
+        if (loading) {
+          return <div className="lds-heart"><div></div></div>
+        }
+
+
         return (
           <div>
             <Todos todos={todos} store={this.props.store}/>
