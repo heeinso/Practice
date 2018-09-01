@@ -6,12 +6,11 @@ import { setAuthedUser } from './authedUser';
 const AUTHED_ID = 'tylermcginnis';
 
 export function handleInitialData() {
-  return (dispatch) => {
-    return getInitialData()
-      .then({users, tweets} => {
-        dispatch(receiveUsers(users))
-        dispatch(receiveTweets(tweets))
-        dispatch(setAuthedUser(AUTHED_ID))
-      })
-  }
+  return dispatch => {
+    return getInitialData().then(({ users, tweets }) => {
+      dispatch(receiveUsers(users));
+      dispatch(receiveTweets(tweets));
+      dispatch(setAuthedUser(AUTHED_ID));
+    });
+  };
 }
