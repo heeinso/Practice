@@ -6,31 +6,33 @@ class NewTweet extends Component {
   state = {
     text: '',
   };
-
   handleChange = e => {
     const text = e.target.value;
 
-    this.setState(() => {
-      text;
-    });
+    this.setState(() => ({
+      text,
+    }));
   };
-
   handleSubmit = e => {
     e.preventDefault();
+
     const { text } = this.state;
     const { dispatch, id } = this.props;
 
     dispatch(handleAddTweet(text, id));
 
-    this.setState(() => {
-      text: '';
-    });
+    this.setState(() => ({
+      text: '',
+    }));
   };
-
   render() {
     const { text } = this.state;
 
-    const tweetLeft = 200 - text.length;
+    {
+      /* todo: Redirect to / if submitted */
+    }
+
+    const tweetLeft = 280 - text.length;
 
     return (
       <div>
