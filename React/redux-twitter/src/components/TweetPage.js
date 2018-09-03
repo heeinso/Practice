@@ -6,18 +6,17 @@ import NewTweet from './NewTweet';
 class TweetPage extends Component {
   render() {
     const { id, replies } = this.props;
-
     return (
       <div>
         <Tweet id={id} />
         <NewTweet id={id} />
         {replies.length !== 0 && <h3 className="center">Replies</h3>}
         <ul>
-          {replies.map(replyId => {
+          {replies.map(replyId => (
             <li key={replyId}>
               <Tweet id={replyId} />
-            </li>;
-          })}
+            </li>
+          ))}
         </ul>
       </div>
     );

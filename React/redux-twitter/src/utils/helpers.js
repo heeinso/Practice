@@ -1,13 +1,13 @@
 export function formatDate(timestamp) {
   const d = new Date(timestamp);
-  const time = d.toLocaleTimeString('ko-KR');
-  return `${time.slice(0, 2)} ${time.substr(2, 5)}${
-    time.substr(7, 1) !== ':' ? time.substr(7, 1) : ''
-  } |  ${d.toLocaleDateString('ko-KR')}`;
+  const time = d.toLocaleTimeString('en-US');
+  return time.substr(0, 5) + time.slice(-2) + ' | ' + d.toLocaleDateString();
 }
+
 export function formatTweet(tweet, author, authedUser, parentTweet) {
   const { id, likes, replies, text, timestamp } = tweet;
   const { name, avatarURL } = author;
+
   return {
     name,
     id,

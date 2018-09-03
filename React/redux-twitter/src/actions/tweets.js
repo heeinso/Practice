@@ -16,12 +16,12 @@ export function handleAddTweet(text, replyingTo) {
   return (dispatch, getState) => {
     const { authedUser } = getState();
 
-    dispatch(showLoading);
+    dispatch(showLoading());
 
     return saveTweet({
       text,
-      replyingTo,
       author: authedUser,
+      replyingTo,
     })
       .then(tweet => dispatch(addTweet(tweet)))
       .then(() => dispatch(hideLoading()));

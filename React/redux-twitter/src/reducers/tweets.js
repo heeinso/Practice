@@ -12,9 +12,10 @@ export default function tweets(state = {}, action) {
         ...state,
         [action.id]: {
           ...state[action.id],
-          likes: action.hasLiked
-            ? state[action.id].likes.filter(uid => uid !== action.authedUser)
-            : state[action.id].likes.concat([action.authedUser]),
+          likes:
+            action.hasLiked === true
+              ? state[action.id].likes.filter(uid => uid !== action.authedUser)
+              : state[action.id].likes.concat([action.authedUser]),
         },
       };
     case ADD_TWEET:
@@ -29,6 +30,7 @@ export default function tweets(state = {}, action) {
           },
         };
       }
+
       return {
         ...state,
         [action.tweet.id]: action.tweet,

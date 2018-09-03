@@ -41,6 +41,7 @@ let users = {
     ],
   },
 };
+
 let tweets = {
   '8xf0y6ziyjabvozdd253nd': {
     id: '8xf0y6ziyjabvozdd253nd',
@@ -235,16 +236,19 @@ let tweets = {
     replies: [],
   },
 };
+
 export function _getUsers() {
   return new Promise((res, rej) => {
     setTimeout(() => res({ ...users }), 1000);
   });
 }
+
 export function _getTweets() {
   return new Promise((res, rej) => {
     setTimeout(() => res({ ...tweets }), 1000);
   });
 }
+
 export function _saveLikeToggle({ id, hasLiked, authedUser }) {
   return new Promise((res, rej) => {
     setTimeout(() => {
@@ -258,10 +262,12 @@ export function _saveLikeToggle({ id, hasLiked, authedUser }) {
               : tweets[id].likes.concat([authedUser]),
         },
       };
+
       res();
     }, 500);
   });
 }
+
 function generateUID() {
   return (
     Math.random()
@@ -272,6 +278,7 @@ function generateUID() {
       .substring(2, 15)
   );
 }
+
 function formatTweet({ author, text, replyingTo = null }) {
   return {
     author,
@@ -283,6 +290,7 @@ function formatTweet({ author, text, replyingTo = null }) {
     replyingTo,
   };
 }
+
 export function _saveTweet({ text, author, replyingTo }) {
   return new Promise((res, rej) => {
     const formattedTweet = formatTweet({
@@ -290,11 +298,13 @@ export function _saveTweet({ text, author, replyingTo }) {
       author,
       replyingTo,
     });
+
     setTimeout(() => {
       tweets = {
         ...tweets,
         [formattedTweet.id]: formattedTweet,
       };
+
       users = {
         ...users,
         [author]: {
@@ -302,6 +312,7 @@ export function _saveTweet({ text, author, replyingTo }) {
           tweets: users[author].tweets.concat([formattedTweet.id]),
         },
       };
+
       res(formattedTweet);
     }, 1000);
   });
