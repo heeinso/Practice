@@ -63,6 +63,10 @@ exports.signin = (req, res, next) => {
 	})(req, res, next);
 };
 
-exports.signout = () => {};
+exports.signout = (req, res) => {
+	res.clearCookie('next-connect.sid');
+	req.logout();
+	res.json({ message: 'You are now signed out!' });
+};
 
 exports.checkAuth = () => {};
