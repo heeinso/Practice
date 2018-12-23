@@ -72,7 +72,7 @@ exports.addFollowing = async (req, res, next) => {
 exports.addFollower = async (req, res) => {
 	const { followId } = req.body;
 
-	await User.findOneAndUpdate(
+	const user = await User.findOneAndUpdate(
 		{ _id: followId },
 		{ $push: { followers: req.user._id } },
 		{ new: true }
