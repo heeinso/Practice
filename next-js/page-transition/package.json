@@ -1,0 +1,23 @@
+{
+	"name": "page-transition",
+	"version": "1.0.0",
+	"description": "page transition demo based on next.js",
+	"scripts": {
+		"dev": "next",
+		"build": "next build",
+		"start": "next start"
+	},
+	"keywords": [
+		"next.js",
+		"react",
+		"styled-jsx"
+	],
+	"author": "reck1ess",
+	"license": "ISC",
+	"dependencies": {
+		"next": "^8.0.3",
+		"react": "^16.8.4",
+		"react-dom": "^16.8.4",
+		"react-overdrive": "0.0.10"
+	}
+}
