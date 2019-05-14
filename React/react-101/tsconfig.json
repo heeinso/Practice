@@ -1,11 +1,15 @@
 {
+  "include": [
+    "./src/*"
+  ],
   "compilerOptions": {
-    "target": "es5",
     "lib": [
       "dom",
-      "dom.iterable",
-      "esnext"
+      "es2015"
     ],
+    "baseUrl": "src",
+    "jsx": "preserve",
+    "target": "es5",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -16,10 +20,6 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "preserve"
-  },
-  "include": [
-    "src"
-  ]
+    "noEmit": true
+  }
 }
