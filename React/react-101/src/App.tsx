@@ -1,5 +1,9 @@
 import * as React from 'react';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { MonitorCard, PlayButton } from './components';
+import { fetchSuccess, fetchFailure } from './actions';
+import { StoreState } from './types';
 import { Typography } from 'antd';
 
 import 'antd/dist/antd.css';
@@ -7,28 +11,37 @@ import './sass/main.scss';
 
 interface Application {
 	timerId: any;
-	state: {
-		success: number;
-		failure: number;
-	};
 	onStart(): void;
 	onStop(): void;
 }
 
-export default class App extends React.Component implements Application {
-	timerId: any = 0;
+interface AppProps {
+	success: number;
+	failure: number;
+	fetchSuccess(): void;
+	fetchFailure(): void;
+}
 
-	state = {
-		success: 0,
-		failure: 0,
-	};
+const mapStateToProps = (state: StoreState) => ({
+	...state,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	fetchSuccess: () => {
+		dispatch(fetchSuccess());
+	},
+	fetchFailure: () => {
+		dispatch(fetchFailure());
+	},
+});
+
+class MonitorApp extends React.PureComponent<AppProps> implements Application {
+	timerId: any = 0;
 
 	onStart = () => {
 		this.timerId = setInterval(() => {
-			this.setState({
-				success: this.state.success + Math.floor(Math.random() * (100 - 1) + 1),
-				failure: this.state.failure + Math.floor(Math.random() * 2 - 0),
-			});
+			this.props.fetchSuccess();
+			this.props.fetchFailure();
 		}, 200);
 	};
 
@@ -46,8 +59,8 @@ export default class App extends React.Component implements Application {
 				</header>
 				<main>
 					<MonitorCard
-						success={this.state.success}
-						failure={this.state.failure}
+						success={this.props.success}
+						failure={this.props.failure}
 					/>
 					<PlayButton
 						monitoring={false}
@@ -59,3 +72,10 @@ export default class App extends React.Component implements Application {
 		);
 	}
 }
+
+const App = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(MonitorApp);
+
+export default App;
