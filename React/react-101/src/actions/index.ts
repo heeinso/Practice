@@ -1,16 +1,19 @@
-import { FETCH_SUCCESS, FETCH_FAILURE } from './action-type';
+import { createAction } from 'typesafe-actions';
 
-export interface CommandAction {
-	type: typeof FETCH_SUCCESS | typeof FETCH_FAILURE;
-	payload: null;
-}
+export const startMonitoring = createAction(
+	'@command/monitoring/start',
+	resolve => () => resolve()
+);
 
-export const fetchSuccess = (): CommandAction => ({
-	type: FETCH_SUCCESS,
-	payload: null,
-});
+export const stopMonitoring = createAction(
+	'@command/monitoring/stop',
+	resolve => () => resolve()
+);
 
-export const fetchFailure = (): CommandAction => ({
-	type: FETCH_FAILURE,
-	payload: null,
-});
+export const fetchSuccess = createAction('@fetch/success', resolve => () =>
+	resolve()
+);
+
+export const fetchFailure = createAction('@fetch/failure', resolve => () =>
+	resolve()
+);
