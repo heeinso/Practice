@@ -13,16 +13,6 @@ export default (
 	action: ActionType<typeof Actions>
 ) => {
 	switch (action.type) {
-		case getType(Actions.startMonitoring):
-			return {
-				...state,
-				monitoring: true,
-			};
-		case getType(Actions.stopMonitoring):
-			return {
-				...state,
-				monitoring: false,
-			};
 		case getType(Actions.fetchSuccess):
 			return {
 				...state,
@@ -34,6 +24,7 @@ export default (
 				failure: state.failure + Math.floor(Math.random() * (2 - 0)),
 			};
 		default:
+			console.log(action.type);
 			return Object.assign({}, state);
 	}
 };

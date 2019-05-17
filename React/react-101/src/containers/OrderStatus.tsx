@@ -1,57 +1,24 @@
 import * as React from 'react';
-import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { StoreState } from '../types';
-import { fetchSuccess, fetchFailure } from '../actions';
 import { Counter, MonitorCard } from '../components';
 
 interface OrderStatusProps {
-	monitoring: boolean;
 	success: number;
 	failure: number;
-	fetchSuccess(): void;
-	fetchFailure(): void;
-}
-
-interface OrderStatusState {
-	errorRate: string;
 }
 
 const mapStateToProps = (state: StoreState) => ({
-	...state,
+	success: state.success,
+	failure: state.failure,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	fetchSuccess: () => {
-		dispatch(fetchSuccess());
-	},
-	fetchFailure: () => {
-		dispatch(fetchFailure());
-	},
-});
-
-class OrderStatus extends React.Component<OrderStatusProps, OrderStatusState> {
-	timerId: any = null;
-
+class OrderStatus extends React.Component<OrderStatusProps> {
 	state = {
-		errorRate: '0',
+		errorRate: 0,
 	};
 
-	componentDidMount() {}
-
 	componentDidUpdate(prevProps: OrderStatusProps) {
-		if (prevProps.monitoring !== this.props.monitoring) {
-			if (this.props.monitoring) {
-				this.timerId = setInterval(() => {
-					this.props.fetchSuccess();
-					this.props.fetchFailure();
-				}, 200);
-			} else {
-				clearInterval(this.timerId);
-				this.timerId = null;
-			}
-		}
-
 		if (
 			prevProps.success !== this.props.success ||
 			prevProps.failure !== this.props.failure
@@ -60,14 +27,8 @@ class OrderStatus extends React.Component<OrderStatusProps, OrderStatusState> {
 				errorRate:
 					this.props.failure > 0
 						? Number((this.props.failure / this.props.success) * 100).toFixed(2)
-						: '0',
+						: 0,
 			});
-		}
-	}
-
-	componentWillUnmount() {
-		if (this.timerId) {
-			clearInterval(this.timerId);
 		}
 	}
 
@@ -82,7 +43,4 @@ class OrderStatus extends React.Component<OrderStatusProps, OrderStatusState> {
 	}
 }
 
-export const OrderStatusContiner = connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(OrderStatus);
+export const OrderStatusContiner = connect(mapStateToProps)(OrderStatus);
