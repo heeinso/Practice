@@ -12,13 +12,15 @@
 		"react-redux": "7.0.3",
 		"react-scripts": "3.0.1",
 		"redux": "4.0.1",
-		"redux-saga": "1.0.2",
+		"redux-saga": "^1.0.2",
+		"svg-react-loader": "^0.4.6",
 		"typesafe-actions": "4.2.1",
 		"typescript": "3.4.5"
 	},
 	"devDependencies": {
 		"@types/react": "16.8.8",
-		"@types/react-dom": "16.8.2"
+		"@types/react-dom": "16.8.2",
+		"@types/redux-saga": "^0.10.5"
 	},
 	"scripts": {
 		"start": "react-scripts start",
