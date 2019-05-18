@@ -1,3 +1,3 @@
-export * from './ResultList';
+export { default as ResultsList } from './ResultsList';
 export * from './SearchStatus';
-export * from './SearchTextField';
+export { default as SearchTextField } from './SearchTextField';

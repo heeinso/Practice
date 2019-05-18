@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { LinearProgress, Typography } from '@material-ui/core';
-import Search from '@material-ui/icons/Search';
 import { inject, observer } from 'mobx-react';
 
 export const SearchStatus = inject('store')(

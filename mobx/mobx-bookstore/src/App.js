@@ -1,9 +1,8 @@
-import { store } from './book-store';
 import React, { Fragment } from 'react';
 import { Grid, Paper, Typography } from '@material-ui/core';
-import { inject, observer, Provider } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 
-import { ResultsList, SearchStatus, SearchTextField } from './components';
+import { ResultsList, SearchTextField } from './components';
 
 const Header = () => (
 	<Typography

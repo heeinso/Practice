@@ -2,7 +2,9 @@ import 'whatwg-fetch';
 import convert from 'xml-js';
 import { isArrayLike } from 'mobx';
 
-const APIKEY = process.env.API_KEY;
+require('dotenv').config();
+
+const APIKEY = process.env.API_KEY || 'sKsyA0SttjAeUx8GaqMzw';
 const API_ENDPOINT =
 	'https://cors-anywhere.herokuapp.com/https://www.goodreads.com';
 

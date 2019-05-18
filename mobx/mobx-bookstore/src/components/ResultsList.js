@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
 	Card,
 	CardContent,
@@ -52,7 +52,7 @@ const BookItem = ({ book }) => {
 
 @inject(({ store }) => ({ searchStore: store }))
 @observer
-export class ResultsList extends React.Component {
+class ResultsList extends React.Component {
 	render() {
 		const { searchStore, style } = this.props;
 		const { isEmpty, results, totalCount, status } = searchStore;
@@ -84,3 +84,5 @@ export class ResultsList extends React.Component {
 		);
 	}
 }
+
+export default ResultsList;

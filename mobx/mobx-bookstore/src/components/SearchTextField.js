@@ -6,7 +6,7 @@ import { inject, observer } from 'mobx-react';
 
 @inject('store')
 @observer
-export class SearchTextField extends React.Component {
+class SearchTextField extends React.Component {
 	render() {
 		const { store, onChange } = this.props;
 		const { term } = store;
@@ -41,3 +41,5 @@ export class SearchTextField extends React.Component {
 		this.props.onEnter();
 	};
 }
+
+export default SearchTextField;

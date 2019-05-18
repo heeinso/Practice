@@ -1,5 +1,5 @@
 import { store } from './store';
-import React, { Fragment } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'mobx-react';
 import App from './App';
