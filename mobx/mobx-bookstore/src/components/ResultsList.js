@@ -8,47 +8,8 @@ import {
 	Typography,
 } from '@material-ui/core';
 import { inject, observer } from 'mobx-react';
-
-const EmptyResults = () => {
-	return (
-		<Card>
-			<CardContent>
-				<Typography variant={'headline'}>No Results</Typography>
-			</CardContent>
-		</Card>
-	);
-};
-
-const BookItem = ({ book }) => {
-	return (
-		<Card
-			elevation={0}
-			style={{
-				flexDirection: 'row',
-				display: 'flex',
-				padding: '1rem',
-			}}>
-			<CardMedia
-				src={book.image}
-				component={'img'}
-				style={{ height: 200, width: 'auto' }}
-			/>
-			<CardContent>
-				<Typography variant={'headline'}>{book.title}</Typography>
-				<Typography variant={'subheading'}>{book.author}</Typography>
-				<Typography variant={'subheading'} style={{ color: 'darkorange' }}>
-					{book.rating}★
-					<span style={{ color: 'black' }}>
-						<span>
-							{' from '}
-							<strong>{book.totalRatings}</strong> ratings.
-						</span>
-					</span>
-				</Typography>
-			</CardContent>
-		</Card>
-	);
-};
+import { EmptyResult } from './EmptyResult';
+import { BookItem } from './BookItem';
 
 @inject(({ store }) => ({ searchStore: store }))
 @observer
@@ -61,7 +22,7 @@ class ResultsList extends React.Component {
 			<Grid spacing={16} container style={style}>
 				{isEmpty && status === 'completed' ? (
 					<Grid item xs={12}>
-						<EmptyResults />
+						<EmptyResult />
 					</Grid>
 				) : null}
 
@@ -74,9 +35,9 @@ class ResultsList extends React.Component {
 					</Grid>
 				) : null}
 
-				{results.map(x => (
-					<Grid item xs={12} key={x.id}>
-						<BookItem book={x} />
+				{results.map(result => (
+					<Grid item xs={12} key={result.id}>
+						<BookItem book={result} />
 						<Divider />
 					</Grid>
 				))}
