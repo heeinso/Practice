@@ -4,6 +4,7 @@ import * as Actions from '../actions';
 
 const initializeState: StoreState = {
 	monitoring: false,
+	monitoringDuration: 200,
 	success: 0,
 	failure: 0,
 };
@@ -13,18 +14,22 @@ export default (
 	action: ActionType<typeof Actions>
 ) => {
 	switch (action.type) {
-		case getType(Actions.fetchSuccess):
+		case getType(Actions.startMonitoring):
 			return {
 				...state,
-				success: state.success + Math.floor(Math.random() * (100 - 1) + 1),
+				monitoring: true,
 			};
-		case getType(Actions.fetchFailure):
+		case getType(Actions.stopMonitoring):
 			return {
 				...state,
-				failure: state.failure + Math.floor(Math.random() * (2 - 0)),
+				monitoring: false,
+			};
+		case getType(Actions.updateOrderStatus):
+			return {
+				...state,
+				...action.payload,
 			};
 		default:
-			console.log(action.type);
 			return Object.assign({}, state);
 	}
 };

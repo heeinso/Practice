@@ -10,10 +10,9 @@ export const stopMonitoring = createAction(
 	resolve => () => resolve()
 );
 
-export const fetchSuccess = createAction('@fetch/success', resolve => () =>
-	resolve()
-);
-
-export const fetchFailure = createAction('@fetch/failure', resolve => () =>
-	resolve()
+export const updateOrderStatus = createAction(
+	'@update/order/status',
+	resolve => {
+		return (success: number, failure: number) => resolve({ success, failure });
+	}
 );
