@@ -1,29 +1,38 @@
-import { all, take, race, delay, put } from 'redux-saga/effects';
+import { all, fork, take, select, delay, put, call } from 'redux-saga/effects';
 import { getType } from 'typesafe-actions';
 import * as Actions from '../actions';
+import * as Api from '../apis/orders';
 
 function* monitoringWorkflow() {
 	while (true) {
 		yield take(getType(Actions.startMonitoring));
+
 		let polling = true;
+
 		while (polling) {
-			yield all([
-				put({ type: getType(Actions.fetchSuccess) }),
-				put({ type: getType(Actions.fetchFailure) }),
+			const [succResp, failResp] = yield all([
+				call(Api.fetchNumberOfSuccessfulOrder),
+				call(Api.fetchNumberOfFailedOrder),
 			]);
 
-			const { stoped } = yield race({
-				waitting: delay(200),
-				stoped: take(getType(Actions.stopMonitoring)),
-			});
+			yield put(
+				Actions.updateOrderStatus(
+					succResp.result.success,
+					failResp.result.failure
+				)
+			);
 
-			if (stoped) {
+			const { monitoring, monitoringDuration } = yield select();
+
+			if (!monitoring) {
 				polling = false;
 			}
+
+			yield delay(monitoringDuration);
 		}
 	}
 }
 
 export default function*() {
-	yield monitoringWorkflow();
+	yield fork(monitoringWorkflow);
 }
