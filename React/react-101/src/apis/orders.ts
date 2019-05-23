@@ -1,38 +1,77 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse, AxiosError } from 'axios';
 import endpoint from './endpoint.config';
 
-interface RequestSuccessResp {
+interface IApiSuccessMessage {
 	status: string;
 }
 
-interface numberOfSuccessfulOrderResp extends RequestSuccessResp {
+interface IApiError {
+	status: string;
+	statusCode: number;
+	errorMessage: string;
+}
+
+export class ApiError implements IApiError {
+	status: string = '';
+	statusCode: number = 0;
+	errorMessage: string = '';
+
+	constructor(err: AxiosError) {
+		this.status = (err && err.response && err.response.data.status) || '';
+		this.statusCode = (err && err.response && err.response.status) || 0;
+		this.errorMessage =
+			(err && err.response && err.response.data.errorMessage) || '';
+	}
+}
+
+interface INumberOfSuccessfulOrderResponse extends IApiSuccessMessage {
 	result: {
 		success: number;
 	};
 }
 
-interface numberOfFailedOrderResp extends RequestSuccessResp {
+interface INumberOfFailedOrderResponse extends IApiSuccessMessage {
 	result: {
 		failure: number;
 	};
 }
 
+interface IOrderTimelineResponse extends IApiSuccessMessage {
+	results: {
+		successTimeline: [];
+		failureTimeline: [];
+	};
+}
+
 export function fetchNumberOfSuccessfulOrder(): Promise<
-	numberOfSuccessfulOrderResp
+	INumberOfSuccessfulOrderResponse
 > {
 	return new Promise((resolve, reject) => {
 		axios
-			.get(endpoint.orders.request.success)
+			.get(endpoint.orders.request.success({ error: true }))
 			.then((resp: AxiosResponse) => resolve(resp.data))
-			.catch(reject);
+			.catch((err: AxiosError) => reject(new ApiError(err)));
 	});
 }
 
-export function fetchNumberOfFailedOrder(): Promise<numberOfFailedOrderResp> {
+export function fetchNumberOfFailedOrder(): Promise<
+	INumberOfFailedOrderResponse
+> {
 	return new Promise((resolve, reject) => {
 		axios
-			.get(endpoint.orders.request.failure)
+			.get(endpoint.orders.request.failure())
 			.then((resp: AxiosResponse) => resolve(resp.data))
-			.catch(reject);
+			.catch((err: AxiosError) => reject(new ApiError(err)));
+	});
+}
+
+export function fetchOrderTimeline(
+	date: string
+): Promise<IOrderTimelineResponse> {
+	return new Promise((resolve, reject) => {
+		axios
+			.get(endpoint.orders.request.timeline(date))
+			.then((resp: AxiosResponse) => resolve(resp.data))
+			.catch((err: AxiosError) => reject(new ApiError(err)));
 	});
 }
