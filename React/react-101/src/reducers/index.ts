@@ -4,7 +4,8 @@ import * as Actions from '../actions';
 
 const initializeState: StoreState = {
 	monitoring: false,
-	monitoringDuration: 200,
+	duration: 200,
+	notifications: [],
 	success: 0,
 	failure: 0,
 };
@@ -28,6 +29,14 @@ export default (
 			return {
 				...state,
 				...action.payload,
+			};
+		case getType(Actions.addNotification):
+			return {
+				...state,
+				notifications: [
+					...state.notifications,
+					{ id: Date.now(), ...action.payload },
+				],
 			};
 		default:
 			return Object.assign({}, state);
