@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { FormattedNumber } from './FormattedNumber';
+import { Maybe } from './Maybe';
 
 const DEFAULT_UNIT = '';
 const DEFAULT_COLOR = '#000';
@@ -9,6 +10,7 @@ interface CounterProps {
 	count: number | string;
 	color?: string;
 	unit?: string;
+	children?: React.ReactNode;
 }
 
 export const Counter: React.FC<CounterProps> = props => {
@@ -22,6 +24,7 @@ export const Counter: React.FC<CounterProps> = props => {
 				<FormattedNumber value={props.count} />
 				<span className="unit">{unit}</span>
 			</p>
+			<Maybe test={!!props.children}>{props.children}</Maybe>
 		</div>
 	);
 };
