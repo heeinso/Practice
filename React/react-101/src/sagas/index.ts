@@ -1,13 +1,29 @@
-import { all, fork, take, select, delay, put, call } from 'redux-saga/effects';
+import {
+	all,
+	fork,
+	take,
+	select,
+	delay,
+	put,
+	call,
+	takeLatest,
+} from 'redux-saga/effects';
+import moment from 'moment';
 import { getType } from 'typesafe-actions';
 import * as Actions from '../actions';
 import * as Api from '../apis/orders';
 import { StoreState } from '../types';
 
-function* monitoringWorkflow() {
-	while (true) {
-		yield take(getType(Actions.startMonitoring));
+function* fetchOrderTimeline() {
+	const {
+		results: { successTimeline, failureTimeline },
+	} = yield call(Api.fetchOrderTimeline, moment().format('YYYYMMDD'));
 
+	yield put(Actions.updateOrderTimeline(successTimeline, failureTimeline));
+}
+
+function* monitoringWorkflow() {
+	while (yield take(getType(Actions.startMonitoring))) {
 		let polling = true;
 
 		while (polling) {
@@ -16,6 +32,12 @@ function* monitoringWorkflow() {
 					call(Api.fetchNumberOfSuccessfulOrder),
 					call(Api.fetchNumberOfFailedOrder),
 				]);
+
+				const { showTimeline }: StoreState = yield select();
+
+				if (showTimeline) {
+					yield fork(fetchOrderTimeline);
+				}
 
 				yield put(
 					Actions.updateOrderStatus(
@@ -42,6 +64,11 @@ function* monitoringWorkflow() {
 	}
 }
 
+function* watchFetchOrderTimeline() {
+	yield takeLatest(getType(Actions.showOrderTimelineChart), fetchOrderTimeline);
+}
+
 export default function*() {
 	yield fork(monitoringWorkflow);
+	yield fork(watchFetchOrderTimeline);
 }
