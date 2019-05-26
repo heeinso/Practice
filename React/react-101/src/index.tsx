@@ -3,7 +3,6 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { StoreState } from './types';
 import reducer from './reducers';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';

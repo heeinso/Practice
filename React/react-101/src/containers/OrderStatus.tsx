@@ -1,17 +1,25 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { StoreState } from '../types';
-import { Counter, MonitorCard } from '../components';
+import { StoreState, ITimelineItem } from '../types';
+import { Maybe, Counter, MonitorCard, TinyChart } from '../components';
 
-interface OrderStatusProps {
+export interface OrderStatusProps {
+	showTimeline: boolean;
 	success: number;
 	failure: number;
+	successTimeline: ITimelineItem[];
+	failureTimeline: ITimelineItem[];
 }
 
-const mapStateToProps = (state: StoreState) => ({
-	success: state.success,
-	failure: state.failure,
-});
+const mapStateToProps = (state: StoreState) => {
+	return {
+		showTimeline: state.showTimeline,
+		success: state.success,
+		failure: state.failure,
+		successTimeline: state.successTimeline,
+		failureTimeline: state.failureTimeline,
+	};
+};
 
 class OrderStatus extends React.Component<OrderStatusProps> {
 	state = {
@@ -35,8 +43,24 @@ class OrderStatus extends React.Component<OrderStatusProps> {
 	render() {
 		return (
 			<MonitorCard>
-				<Counter title="Success" count={this.props.success} />
-				<Counter title="Failure" count={this.props.failure} color="red" />
+				<Counter title="Success" count={this.props.success}>
+					<Maybe test={this.props.showTimeline}>
+						<TinyChart
+							source={this.props.successTimeline.slice(
+								this.props.successTimeline.length - 10
+							)}
+						/>
+					</Maybe>
+				</Counter>
+				<Counter title="Failure" count={this.props.failure} color="red">
+					<Maybe test={this.props.showTimeline}>
+						<TinyChart
+							source={this.props.failureTimeline.slice(
+								this.props.failureTimeline.length - 10
+							)}
+						/>
+					</Maybe>
+				</Counter>
 				<Counter title="Error Rate" count={this.state.errorRate} unit="%" />
 			</MonitorCard>
 		);
