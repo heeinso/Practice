@@ -3,8 +3,8 @@ import { Switch } from 'antd';
 
 interface ToggleProps {
 	label: string;
-	onOn?: () => void;
-	onOff?: () => void;
+	turnOn: () => void;
+	turnOff: () => void;
 }
 
 export const Toggle: React.FC<ToggleProps> = props => {
@@ -17,9 +17,9 @@ export const Toggle: React.FC<ToggleProps> = props => {
 			unCheckedChildren={props.label}
 			onChange={checked => {
 				if (checked) {
-					props.onOn();
+					props.turnOn();
 				} else {
-					props.onOff();
+					props.turnOff();
 				}
 			}}
 		/>
