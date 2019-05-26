@@ -4,10 +4,13 @@ import * as Actions from '../actions';
 
 const initializeState: StoreState = {
 	monitoring: false,
+	showTimeline: false,
 	duration: 200,
 	notifications: [],
 	success: 0,
 	failure: 0,
+	successTimeline: [],
+	failureTimeline: [],
 };
 
 export default (
@@ -25,10 +28,27 @@ export default (
 				...state,
 				monitoring: false,
 			};
+		case getType(Actions.showOrderTimelineChart):
+			return {
+				...state,
+				showTimeline: true,
+			};
+		case getType(Actions.hideOrderTimelineChart):
+			return {
+				...state,
+				showTimeline: false,
+			};
 		case getType(Actions.updateOrderStatus):
 			return {
 				...state,
 				...action.payload,
+			};
+		case getType(Actions.updateOrderTimeline):
+			const { success, failure } = action.payload;
+			return {
+				...state,
+				successTimeline: success.map(({ time, count }) => ({ time, count })),
+				failureTimeline: failure.map(({ time, count }) => ({ time, count })),
 			};
 		case getType(Actions.addNotification):
 			return {
