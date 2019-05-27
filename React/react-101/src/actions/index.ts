@@ -1,21 +1,28 @@
 import { createAction } from 'typesafe-actions';
 
-export const addNotification = createAction("@notification/add", resolve => {
-  return (type: string, msg: string) => resolve({ type, msg });
+export const addNotification = createAction('@notification/add', resolve => {
+	return (type: string, msg: string) => resolve({ type, msg });
 });
 
+export const showedNotification = createAction(
+	'@notification/showed',
+	resolve => {
+		return (id: number) => resolve({ id });
+	}
+);
+
 export const showOrderTimelineChart = createAction(
-  "@command/timeline/chart/show",
-  resolve => {
-    return () => resolve();
-  }
+	'@command/timeline/chart/show',
+	resolve => {
+		return () => resolve();
+	}
 );
 
 export const hideOrderTimelineChart = createAction(
-  "@command/timeline/chart/hide",
-  resolve => {
-    return () => resolve();
-  }
+	'@command/timeline/chart/hide',
+	resolve => {
+		return () => resolve();
+	}
 );
 
 export const startMonitoring = createAction(
@@ -36,16 +43,15 @@ export const updateOrderStatus = createAction(
 );
 
 export const fetchOrderTimeline = createAction(
-  "@fetch/order/timeline",
-  resolve => {
-    return (date: string) => resolve(date);
-  }
+	'@fetch/order/timeline',
+	resolve => {
+		return (date: string) => resolve(date);
+	}
 );
 
 export const updateOrderTimeline = createAction(
-  "@udpate/order/timeline",
-  resolve => {
-    return (success: [], failure: []) => resolve({ success, failure });
-  }
+	'@udpate/order/timeline',
+	resolve => {
+		return (success: [], failure: []) => resolve({ success, failure });
+	}
 );
-
