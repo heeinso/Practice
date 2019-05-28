@@ -19,11 +19,11 @@ const mapStateToProps = (state: StoreState) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-	showedNotification: id => dispatch(showedNotification(id)),
+	showedNotification: (id: number) => dispatch(showedNotification(id)),
 });
 
 class Notification extends React.PureComponent<IProps> {
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps: IProps) {
 		if (prevProps.notifications.length !== this.props.notifications.length) {
 			this.props.notifications.forEach(noti => {
 				notification.error({
