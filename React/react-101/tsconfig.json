@@ -1,25 +1,20 @@
 {
-  "include": [
-    "./src/*"
-  ],
-  "compilerOptions": {
-    "lib": [
-      "dom",
-      "es2015"
-    ],
-    "baseUrl": "src",
-    "jsx": "preserve",
-    "target": "es5",
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true
-  }
+	"include": ["./src/*"],
+	"compilerOptions": {
+		"lib": ["dom", "es2015"],
+		"baseUrl": "src",
+		"jsx": "preserve",
+		"target": "es5",
+		"allowJs": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"strict": false,
+		"forceConsistentCasingInFileNames": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"noEmit": true
+	}
 }
