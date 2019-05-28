@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { OrderStatusContiner, MonitorControllerContainer } from './containers';
+import {
+	NotificationContainer,
+	OrderStatusContiner,
+	MonitorControllerContainer,
+} from './containers';
 import { Typography } from 'antd';
 
 import 'antd/dist/antd.css';
@@ -9,6 +13,7 @@ export default class App extends React.PureComponent {
 	render() {
 		return (
 			<div>
+				<NotificationContainer />
 				<header>
 					<Typography.Title>React & TS Boilerplate</Typography.Title>
 				</header>
