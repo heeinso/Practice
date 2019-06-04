@@ -1,44 +1,54 @@
-import React from 'react'
-import NextHead from 'next/head'
-import { string } from 'prop-types'
+import Link from 'next/link';
+import { logout } from '../utils/auth';
 
-const defaultDescription = ''
-const defaultOGURL = ''
-const defaultOGImage = ''
+const Header = props => (
+	<header>
+		<nav>
+			<ul>
+				<li>
+					<Link href="/">
+						<a>Home</a>
+					</Link>
+				</li>
+				<li>
+					<Link href="/login">
+						<a>Login</a>
+					</Link>
+				</li>
+				<li>
+					<Link href="/profile">
+						<a>Profile</a>
+					</Link>
+				</li>
+				<li>
+					<button onClick={logout}>Logout</button>
+				</li>
+			</ul>
+		</nav>
+		<style jsx>{`
+			ul {
+				display: flex;
+				list-style: none;
+				margin-left: 0;
+				padding-left: 0;
+			}
+			li {
+				margin-right: 1rem;
+			}
+			li:first-child {
+				margin-left: auto;
+			}
+			a {
+				color: #fff;
+				text-decoration: none;
+			}
+			header {
+				padding: 0.2rem;
+				color: #fff;
+				background-color: #333;
+			}
+		`}</style>
+	</header>
+);
 
-const Head = props => (
-  <NextHead>
-    <meta charSet="UTF-8" />
-    <title>{props.title || ''}</title>
-    <meta
-      name="description"
-      content={props.description || defaultDescription}
-    />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" sizes="192x192" href="/static/touch-icon.png" />
-    <link rel="apple-touch-icon" href="/static/touch-icon.png" />
-    <link rel="mask-icon" href="/static/favicon-mask.svg" color="#49B882" />
-    <link rel="icon" href="/static/favicon.ico" />
-    <meta property="og:url" content={props.url || defaultOGURL} />
-    <meta property="og:title" content={props.title || ''} />
-    <meta
-      property="og:description"
-      content={props.description || defaultDescription}
-    />
-    <meta name="twitter:site" content={props.url || defaultOGURL} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content={props.ogImage || defaultOGImage} />
-    <meta property="og:image" content={props.ogImage || defaultOGImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-  </NextHead>
-)
-
-Head.propTypes = {
-  title: string,
-  description: string,
-  url: string,
-  ogImage: string
-}
-
-export default Head
+export default Header;

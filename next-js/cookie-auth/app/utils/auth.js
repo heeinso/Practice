@@ -14,42 +14,43 @@ export const logout = () => {
 	Router.push('/login');
 };
 
-export const withAuthSync = (WrappedComponent) => {
-  class extends React.Component {
-    static displayName = `withAuthSync(${getDisplayName(WrappedComponent)})`;
+const getDisplayName = Component =>
+	Component.displayName || Component.name || 'Component';
 
-    static async getInitialProps (ctx) {
-      const token = auth(ctx)
+export const withAuthSync = WrappedComponent =>
+	class BaseComponent extends React.Component {
+		static displayName = `withAuthSync(${getDisplayName(WrappedComponent)})`;
 
-      const componentProps =
-        WrappedComponent.getInitialProps &&
-        (await WrappedComponent.getInitialProps(ctx))
+		static async getInitialProps(ctx) {
+			const token = auth(ctx);
 
-      return { ...componentProps, token }
-    }
+			const componentProps =
+				WrappedComponent.getInitialProps &&
+				(await WrappedComponent.getInitialProps(ctx));
 
-    componentDidMount () {
-      window.addEventListener('storage', this.syncLogout)
-    }
+			return { ...componentProps, token };
+		}
 
-    componentWillUnmount () {
-      window.removeEventListener('storage', this.syncLogout)
-      window.localStorage.removeItem('logout')
-    }
+		componentDidMount() {
+			window.addEventListener('storage', this.syncLogout);
+		}
 
-    syncLogout = (e) =>  {
-      if (e.key === 'logout') {
-        console.log('logged out from storage!')
-        Router.push('/login')
-      }
-    }
+		componentWillUnmount() {
+			window.removeEventListener('storage', this.syncLogout);
+			window.localStorage.removeItem('logout');
+		}
 
-    render () {
-      return <WrappedComponent {...this.props} />
-    }
+		syncLogout = e => {
+			if (e.key === 'logout') {
+				console.log('logged out from storage!');
+				Router.push('/login');
+			}
+		};
 
-  }
-}
+		render() {
+			return <WrappedComponent {...this.props} />;
+		}
+	};
 
 export const auth = ctx => {
 	const { token } = nextCookie(ctx);
