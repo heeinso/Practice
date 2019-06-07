@@ -1,11 +1,15 @@
 import { ActionType, getType } from 'typesafe-actions';
-import { StoreState } from '../types';
+import { IStoreState } from '../store';
 import * as Actions from '../actions';
 
-const initializeState: StoreState = {
+const initializeState: IStoreState = {
+	authentication: null,
 	monitoring: false,
+	shopList: [],
+	openNotificationCenter: false,
 	showTimeline: false,
 	duration: 200,
+	asyncTasks: [],
 	notifications: [],
 	success: 0,
 	failure: 0,
@@ -14,10 +18,60 @@ const initializeState: StoreState = {
 };
 
 export default (
-	state: StoreState = initializeState,
+	state: IStoreState = initializeState,
 	action: ActionType<typeof Actions>
 ) => {
 	switch (action.type) {
+		case getType(Actions.cleanupAsyncTask): {
+			const currentTime = Date.now();
+			return {
+				...state,
+				asyncTasks: state.asyncTasks.filter(
+					task => task.complete && currentTime - task.timestamp > 10000
+				),
+			};
+		}
+		case getType(Actions.createAsyncTask):
+			return {
+				...state,
+				asyncTasks: [
+					...state.asyncTasks,
+					{
+						id: action.payload.id,
+						action: action.payload.action,
+						complete: false,
+						timestamp: Date.now(),
+					},
+				],
+			};
+		case getType(Actions.completeAsyncTask):
+			return {
+				...state,
+				asyncTasks: state.asyncTasks.map(task =>
+					task.id === action.payload.id
+						? {
+								...task,
+								complete: true,
+								completeStatus: action.payload.completeStatus,
+						  }
+						: { ...task }
+				),
+			};
+		case getType(Actions.responseShopList):
+			return {
+				...state,
+				shopList: action.payload.rows,
+			};
+		case getType(Actions.successLogin):
+			return {
+				...state,
+				authentication: { ...action.payload },
+			};
+		case getType(Actions.successLogout):
+			return {
+				...state,
+				authentication: null,
+			};
 		case getType(Actions.startMonitoring):
 			return {
 				...state,
