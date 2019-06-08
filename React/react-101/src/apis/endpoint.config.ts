@@ -2,6 +2,12 @@ const SERVER = 'https://codebrew.kr';
 const API_PREFIX = 'openapi';
 
 interface Config {
+  auth: {
+    login(): string;
+  };
+  shops: {
+    list(): string;
+  };
 	orders: {
 		request: {
 			success(options: { error?: boolean }): string;
@@ -12,6 +18,12 @@ interface Config {
 }
 
 const config: Config = {
+  auth: {
+    login: () => `${SERVER}/${API_PREFIX}/auth/login`
+  },
+  shops: {
+    list: () => `${SERVER}/${API_PREFIX}/shops`
+  },
 	orders: {
 		request: {
 			success: ({ error = false }) =>
