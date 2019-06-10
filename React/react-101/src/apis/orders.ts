@@ -17,10 +17,9 @@ export class ApiError implements IApiError {
 	errorMessage: string = '';
 
 	constructor(err: AxiosError) {
-		this.status = (err && err.response && err.response.data.status) || '';
-		this.statusCode = (err && err.response && err.response.status) || 0;
-		this.errorMessage =
-			(err && err.response && err.response.data.errorMessage) || '';
+		this.status = err.response.data.status;
+		this.statusCode = err.response.status;
+		this.errorMessage = err.response.data.errorMessage;
 	}
 }
 
@@ -41,6 +40,16 @@ interface IOrderTimelineResponse extends IApiSuccessMessage {
 		successTimeline: [];
 		failureTimeline: [];
 	};
+}
+
+export function requestLogin(username: string, password: string): Promise<any> {
+	return new Promise((resolve, reject) => {
+		console.log({ username, password });
+		axios
+			.post(endpoint.auth.login(), { username, password })
+			.then((resp: AxiosResponse) => resolve(resp.data))
+			.catch((err: AxiosError) => reject(new ApiError(err)));
+	});
 }
 
 export function fetchNumberOfSuccessfulOrder(): Promise<
@@ -71,6 +80,15 @@ export function fetchOrderTimeline(
 	return new Promise((resolve, reject) => {
 		axios
 			.get(endpoint.orders.request.timeline(date))
+			.then((resp: AxiosResponse) => resolve(resp.data))
+			.catch((err: AxiosError) => reject(new ApiError(err)));
+	});
+}
+
+export function fetchShops(): Promise<IOrderTimelineResponse> {
+	return new Promise((resolve, reject) => {
+		axios
+			.get(endpoint.shops.list())
 			.then((resp: AxiosResponse) => resolve(resp.data))
 			.catch((err: AxiosError) => reject(new ApiError(err)));
 	});
