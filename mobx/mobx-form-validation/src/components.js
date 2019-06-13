@@ -12,7 +12,7 @@ import { CheckCircle } from '@material-ui/icons';
 import { CircularProgress } from '@material-ui/core';
 
 @inject(stores => ({ store: stores.store }))
-export class UserEnrollmentForm extends React.Component {
+class UserEnrollmentForm extends React.Component {
 	render() {
 		const { store } = this.props;
 
@@ -135,7 +135,7 @@ const InputField = observer(({ store, field, label, type }) => {
 });
 
 @inject('store')
-export class EnrollmentComplete extends React.Component {
+class EnrollmentComplete extends React.Component {
 	render() {
 		const { store } = this.props;
 
@@ -153,3 +153,30 @@ export class EnrollmentComplete extends React.Component {
 		);
 	}
 }
+
+@inject('store')
+class FormContainer extends React.Component {
+	render() {
+		const { store } = this.props;
+		return (
+			<div
+				style={{
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+					width: '100vw',
+					height: '100vh',
+					fontSize: '32px',
+					fontWeight: 500,
+				}}>
+				{store.enrollmentStatus === 'completed' ? (
+					<EnrollmentComplete />
+				) : (
+					<UserEnrollmentForm />
+				)}
+			</div>
+		);
+	}
+}
+
+export default FormContainer;

@@ -1,20 +1,24 @@
 import React from 'react';
+import { UserEnrollmentData } from './store';
+import { Provider } from 'mobx-react';
+import FormContainer from './components';
 
-function App() {
-	return (
-		<div
-			style={{
-				display: 'flex',
-				alignItems: 'center',
-				justifyContent: 'center',
-				width: '100vw',
-				height: '100vh',
-				fontSize: '32px',
-				fontWeight: 500,
-			}}>
-			Mobx Form Validation
-		</div>
-	);
+export default class App extends React.Component {
+	constructor(props) {
+		super(props);
+		this.store = new UserEnrollmentData();
+	}
+
+	render() {
+		return (
+			<Provider store={this.store}>
+				<FormContainer />
+			</Provider>
+		);
+	}
+
+	componentWillUnmount() {
+		this.store.cleanup();
+		this.store = null;
+	}
 }
-
-export default App;
