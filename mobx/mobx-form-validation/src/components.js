@@ -17,7 +17,12 @@ class UserEnrollmentForm extends React.Component {
 		const { store } = this.props;
 
 		return (
-			<form>
+			<form
+				style={{
+					width: 'calc(100vw - 10px)',
+					maxWidth: '768px',
+					margin: '0 auto',
+				}}>
 				<Grid container direction={'column'}>
 					<CenteredGridItem>
 						<Typography variant={'title'}>Enroll User</Typography>
