@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 
-import Header from './lib/Header';
+import Header from './Common/Header';
 import Home from './Home';
 
 @inject('authStore', 'commonStore')
