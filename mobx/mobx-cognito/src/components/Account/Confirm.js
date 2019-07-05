@@ -3,13 +3,13 @@ import { FormGroup, FormControl, Button } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 
-import BasicPage from '../lib/BasicPage';
-import ListErrors from '../lib/ListErrors';
+import BasicPage from '../Common/BasicPage';
+import ListErrors from '../Common/ListErrors';
 
 @inject('authStore')
 @withRouter
 @observer
-export default class Confirm extends React.Component {
+class Confirm extends React.Component {
 	handleCodeChange = e => this.props.authStore.setCode(e.target.value);
 	handleEmailChange = e => this.props.authStore.setEmail(e.target.value);
 	handleSubmitForm = e => {
@@ -57,3 +57,5 @@ export default class Confirm extends React.Component {
 		);
 	}
 }
+
+export default Confirm;

@@ -9,11 +9,11 @@ import {
 } from 'react-bootstrap';
 
 import RedirectIfLoggedOut from './RedirectIfLoggedOut.js';
-import BasicPage from '../lib/BasicPage';
+import BasicPage from '../Common/BasicPage';
 
 @inject('authStore')
 @observer
-export default class Settings extends React.Component {
+class Settings extends React.Component {
 	componentWillUnmount() {
 		this.props.authStore.reset();
 	}
@@ -87,3 +87,5 @@ export default class Settings extends React.Component {
 		);
 	}
 }
+
+export default Settings;

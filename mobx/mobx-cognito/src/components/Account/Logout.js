@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { inject } from 'mobx-react';
 
 @inject('authStore')
-export default class App extends React.Component {
+class Logout extends React.Component {
 	componentWillMount() {
 		this.props.authStore.logout();
 	}
@@ -12,3 +12,5 @@ export default class App extends React.Component {
 		return <Redirect to="/" />;
 	}
 }
+
+export default Logout;

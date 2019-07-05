@@ -3,12 +3,12 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { FormGroup, FormControl, Button } from 'react-bootstrap';
 
-import BasicPage from '../lib/BasicPage';
+import BasicPage from '../Common/BasicPage';
 
 @inject('authStore')
 @withRouter
 @observer
-export default class Login extends React.Component {
+class Login extends React.Component {
 	componentWillUnmount() {
 		this.props.authStore.reset();
 	}
@@ -59,3 +59,5 @@ export default class Login extends React.Component {
 		);
 	}
 }
+
+export default Login;

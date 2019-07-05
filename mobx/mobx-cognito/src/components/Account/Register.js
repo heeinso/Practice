@@ -3,12 +3,12 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { FormGroup, FormControl, Button } from 'react-bootstrap';
 
-import BasicPage from '../lib/BasicPage';
+import BasicPage from '../Common/BasicPage';
 
 @inject('authStore')
 @withRouter
 @observer
-export default class Register extends React.Component {
+class Register extends React.Component {
 	handleEmailChange = e => this.props.authStore.setEmail(e.target.value);
 	handlePasswordChange = e => this.props.authStore.setPassword(e.target.value);
 	handleSubmitForm = e => {
@@ -56,3 +56,5 @@ export default class Register extends React.Component {
 		);
 	}
 }
+
+export default Register;
