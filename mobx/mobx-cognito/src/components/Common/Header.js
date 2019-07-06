@@ -43,7 +43,7 @@ const LoggedInView = () => (
 );
 
 @inject('commonStore', 'authStore')
-export default class Header extends React.Component {
+class Header extends React.Component {
 	render() {
 		return (
 			<Navbar>
@@ -66,3 +66,5 @@ export default class Header extends React.Component {
 		);
 	}
 }
+
+export default Header;

@@ -6,7 +6,7 @@ import ListErrors from './ListErrors';
 
 @inject('authStore')
 @observer
-export default class BasicPage extends React.Component {
+class BasicPage extends React.Component {
 	render() {
 		const { title, authStore, children, columnOne, columnTwo } = this.props;
 		return (
@@ -40,3 +40,5 @@ export default class BasicPage extends React.Component {
 		);
 	}
 }
+
+export default BasicPage;

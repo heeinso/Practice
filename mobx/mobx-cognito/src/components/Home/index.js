@@ -5,7 +5,7 @@ import Banner from './Banner';
 import MainView from './MainView';
 
 @inject('commonStore')
-export default class Home extends React.Component {
+class Home extends React.Component {
 	render() {
 		return (
 			<div>
@@ -15,3 +15,5 @@ export default class Home extends React.Component {
 		);
 	}
 }
+
+export default Home;
