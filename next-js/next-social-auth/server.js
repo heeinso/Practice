@@ -4,8 +4,6 @@ const express = require('express');
 const next = require('next');
 const path = require('path');
 const fs = require('fs');
-const https = require('https');
-const http = require('http');
 const passport = require('passport');
 const session = require('express-session');
 const cors = require('cors');
@@ -14,17 +12,10 @@ const authRouter = require('./lib/router');
 const passportInit = require('./lib/passport');
 const { CLIENT_ORIGIN } = require('./config');
 
-const devProxy = {
-	'/api': {
-		target: 'http://localhost:8080',
-		pathRewrite: { '^/api': '/' },
-		changeOrigin: true,
-	},
-};
-
 const port = 3000;
 const env = process.env.NODE_ENV;
 const dev = env !== 'production';
+
 const nextApp = next({
 	dir: '.',
 	dev,
@@ -32,18 +23,20 @@ const nextApp = next({
 
 const handle = nextApp.getRequestHandler();
 
+const server = express();
+const socketServer = require('http').Server(server);
+const io = require('socket.io')(socketServer);
+
+io.on('connection', socket => {
+	socket.on('io', data => {
+		messages.push(data);
+		socket.broadcast.emit('io', data);
+	});
+});
+
 nextApp
 	.prepare()
 	.then(() => {
-		const server = express();
-
-		if (dev && devProxy) {
-			const proxyMiddleware = require('http-proxy-middleware');
-			Object.keys(devProxy).forEach(function(context) {
-				server.use(proxyMiddleware(context, devProxy[context]));
-			});
-		}
-
 		server.use(express.json());
 		server.use(passport.initialize());
 		passportInit();
@@ -62,7 +55,6 @@ nextApp
 			})
 		);
 
-		const io = socketio(server);
 		server.set('io', io);
 
 		server.get('/wake-up', (req, res) => res.send('👍'));

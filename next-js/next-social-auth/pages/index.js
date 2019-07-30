@@ -1,91 +1,353 @@
-import React from 'react'
-import Link from 'next/link'
-import Head from '../components/head'
-import Nav from '../components/nav'
+import React, { Component } from 'react';
+import io from 'socket.io-client';
 
-const Home = () => (
-  <div>
-    <Head title="Home" />
-    <Nav />
+import OAuth from '../components/OAuth';
+import { Loading } from '../components/Loading';
+import { SEO } from '../components/SEO';
+import { Header } from '../components/Header';
+import { Footer } from '../components/Footer';
 
-    <div className="hero">
-      <h1 className="title">Welcome to Next!</h1>
-      <p className="description">
-        To get started, edit <code>pages/index.js</code> and save to reload.
-      </p>
+const socket = io('http://localhost:3000');
+const providers = ['github'];
 
-      <div className="row">
-        <Link href="https://github.com/zeit/next.js#getting-started">
-          <a className="card">
-            <h3>Getting Started &rarr;</h3>
-            <p>Learn more about Next on Github and in their examples</p>
-          </a>
-        </Link>
-        <Link href="https://open.segment.com/create-next-app">
-          <a className="card">
-            <h3>Examples &rarr;</h3>
-            <p>
-              Find other example boilerplates on the{' '}
-              <code>create-next-app</code> site
-            </p>
-          </a>
-        </Link>
-        <Link href="https://github.com/segmentio/create-next-app">
-          <a className="card">
-            <h3>Create Next App &rarr;</h3>
-            <p>Was this tool helpful? Let us know how we can improve it</p>
-          </a>
-        </Link>
-      </div>
-    </div>
+export default class extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = { loading: true };
+	}
 
-    <style jsx>{`
-      .hero {
-        width: 100%;
-        color: #333;
-      }
-      .title {
-        margin: 0;
-        width: 100%;
-        padding-top: 80px;
-        line-height: 1.15;
-        font-size: 48px;
-      }
-      .title,
-      .description {
-        text-align: center;
-      }
-      .row {
-        max-width: 880px;
-        margin: 80px auto 40px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-      }
-      .card {
-        padding: 18px 18px 24px;
-        width: 220px;
-        text-align: left;
-        text-decoration: none;
-        color: #434343;
-        border: 1px solid #9b9b9b;
-      }
-      .card:hover {
-        border-color: #067df7;
-      }
-      .card h3 {
-        margin: 0;
-        color: #067df7;
-        font-size: 18px;
-      }
-      .card p {
-        margin: 0;
-        padding: 12px 0 0;
-        font-size: 13px;
-        color: #333;
-      }
-    `}</style>
-  </div>
-)
+	static async getInitialProps({ pathname, query }) {
+		return {
+			pathname,
+			query,
+			queryString: Object.keys(query).join(''),
+		};
+	}
 
-export default Home
+	componentDidMount() {
+		fetch(`http://localhost:3000/wake-up`).then(res => {
+			if (res.ok) {
+				this.setState({ loading: false });
+			}
+		});
+	}
+
+	render() {
+		const buttons = (providers, socket) =>
+			providers.map(provider => (
+				<OAuth provider={provider} key={provider} socket={socket} />
+			));
+
+		return (
+			<React.Fragment>
+				<div className="wrapper">
+					<div className="container">
+						{this.state.loading ? <Loading /> : buttons(providers, socket)}
+					</div>
+					<Footer />
+				</div>
+				<style jsx global>
+					{`
+						body {
+							font-family: Roboto, sans-serif;
+							background: #f2f2f2;
+						}
+
+						/* General Animations */
+						.fadein-slow {
+							animation: fadein 4s;
+						}
+
+						.fadein-fast {
+							animation: fadein 2s;
+						}
+
+						@keyframes fadein {
+							from {
+								opacity: 0;
+							}
+							to {
+								opacity: 1;
+							}
+						}
+
+						/* wrappers & containers */
+						.wrapper {
+							display: flex;
+							flex-direction: column;
+							align-items: center;
+						}
+
+						.container {
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							justify-content: space-around;
+							height: 87vh;
+							width: 90vw;
+						}
+
+						@media screen and (max-width: 900px) {
+							.container {
+								flex-wrap: wrap;
+							}
+						}
+
+						@media screen and (max-width: 480px) {
+							.container {
+								flex-direction: column;
+								flex-wrap: nowrap;
+								height: 200vh;
+							}
+						}
+
+						/* card */
+						.card {
+							background-color: #fff;
+							border-radius: 3%;
+							box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+							word-wrap: break-word;
+							width: 215px;
+							height: 100%;
+							margin-bottom: 20px;
+							transition: 0.5s;
+						}
+
+						.card:hover {
+							box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.45);
+						}
+
+						.close {
+							border-radius: 50%;
+							text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+							float: right;
+							top: -228px;
+							right: -6px;
+							font-size: 2em;
+							position: relative;
+							color: #fff;
+							transition: 0.5s;
+						}
+
+						.close:hover {
+							cursor: pointer;
+							box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+						}
+
+						img {
+							width: 215px;
+							border-radius: 3% 3% 0 0;
+						}
+
+						h4 {
+							font-size: 1.2em;
+							margin: 15px;
+							color: #757575;
+						}
+
+						/* Loading Icon */
+						.loading-wrapper,
+						.loading {
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							flex-direction: column;
+						}
+
+						.loading {
+							width: 200px;
+							height: 200px;
+						}
+
+						.loading .background {
+							border-radius: 50%;
+							background: #6762a6;
+							border: 3px solid #c9c3e6;
+							box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.25);
+							width: 200px;
+							height: 200px;
+							box-sizing: border-box;
+							animation: pulse-colors 2s infinite alternate linear;
+						}
+
+						.loading i {
+							margin: 25px 5px 5px 55px;
+							float: left;
+							font-size: 10em !important;
+							color: #fff;
+							animation: pulse-icon 2s infinite alternate linear;
+						}
+
+						@keyframes pulse-icon {
+							from {
+								text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.25);
+							}
+							to {
+								text-shadow: 2px 4px 4px rgba(0, 0, 0, 0.55);
+							}
+						}
+
+						@keyframes pulse-colors {
+							from {
+								background: #c9c3e6;
+								border: 3px solid #a29ccc;
+							}
+							to {
+								background: #6762a6;
+								border: 3px solid #c9c3e6;
+							}
+						}
+
+						/* Button reset */
+						button {
+							background: none;
+							color: inherit;
+							border: none;
+							padding: 0;
+							font: inherit;
+							cursor: pointer;
+							outline: inherit;
+							margin-bottom: 20px;
+						}
+
+						/* Shared button styles */
+						.button-wrapper {
+							height: 300px;
+						}
+
+						button {
+							border-radius: 50%;
+							width: 215px;
+							height: 215px;
+							box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.25);
+							transition-timing-function: ease-in;
+							transition: 0.3s;
+							transform: scale(0.7);
+						}
+
+						button:hover {
+							box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.5);
+						}
+
+						button.disabled {
+							background-color: #999 !important;
+							cursor: no-drop;
+						}
+
+						button.disabled:hover {
+							box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.25);
+						}
+
+						button.disabled:hover span {
+							text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.25);
+						}
+
+						button span {
+							font-size: 10em !important;
+							text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.25);
+							transition: 0.3s;
+							color: #fff;
+						}
+
+						button:hover span {
+							text-shadow: 2px 5px 5px rgba(0, 0, 0, 0.5);
+							transform: rotate(-1.1deg);
+						}
+
+						/* Twitter */
+						button.twitter {
+							border: 3px solid #ffffff;
+							background: #433e90;
+						}
+
+						button.twitter:hover {
+							background: #326ada;
+						}
+
+						/* Google */
+						button.google {
+							border: 3px solid #ffffff;
+							background: #0057e7;
+						}
+
+						button.google:hover {
+							background: #008744;
+						}
+
+						/* Facebook */
+						button.facebook {
+							border: 3px solid #ffffff;
+							background: #8b9dc3;
+						}
+
+						button.facebook:hover {
+							background: #3b5998;
+						}
+
+						/* Github */
+						button.github {
+							border: 3px solid #ffffff;
+							background: #767676;
+						}
+
+						button.github:hover {
+							background: #6e5494;
+						}
+
+						/* footer */
+						footer {
+							display: flex;
+							justify-content: space-between;
+							width: 87vw;
+						}
+
+						footer a {
+							color: #fff;
+						}
+
+						footer span {
+							font-size: 3em !important;
+							text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+							transition: 0.3s;
+							padding-top: 3px;
+						}
+
+						footer span:hover {
+							cursor: pointer;
+							text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+						}
+
+						footer .small-button {
+							border-radius: 50%;
+							border: 1px solid #fff;
+							width: 55px;
+							height: 55px;
+							transition: 0.3s;
+							box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+							text-align: center;
+						}
+
+						footer .small-button:hover {
+							background: #767676;
+							box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.45);
+						}
+
+						footer .small-button.github {
+							background: #6e5494;
+						}
+
+						footer .small-button.medium {
+							background: #00ab6c;
+							font-size: 0.85em;
+						}
+
+						footer .small-button.medium span {
+							position: relative;
+							top: 4px;
+						}
+					`}
+				</style>
+			</React.Fragment>
+		);
+	}
+}
