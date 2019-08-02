@@ -1,36 +1,31 @@
 import React from 'react';
 
-import Form from './Form';
 import './App.css';
 
-export default () => {
-	const [todos, setTodos] = React.useState([]);
+const useFetch = url => {
+	const [data, setData] = React.useState(null);
+	const [loading, setLoading] = React.useState(true);
 
-	const toggleComplete = i =>
-		setTodos(
-			todos.map((todo, k) =>
-				k === i ? { ...todo, complete: !todo.complete } : todo
-			)
-		);
+	React.useEffect(async () => {
+		const response = await fetch(url);
+		const data = await response.json();
+		const [item] = data.results;
+		setData(item);
+		setLoading(false);
+	}, [url]);
+
+	return { data, loading };
+};
+
+export default () => {
+	const [count, setCount] = React.useState(0);
+	const { data, loading } = useFetch('https://api.randomuser.me/');
 
 	return (
-		<div className="App">
-			<Form
-				onSubmit={text => setTodos([{ text, complete: false }, ...todos])}
-			/>
-			<div>
-				{todos.map(({ text, complete }, i) => (
-					<div
-						key={text}
-						onClick={() => toggleComplete(i)}
-						style={{
-							textDecoration: complete ? 'line-through' : '',
-						}}>
-						{text}
-					</div>
-				))}
-			</div>
-			<button onClick={() => setTodos([])}>reset</button>
+		<div>
+			<p>You clicked {count} times</p>
+			<button onClick={() => setCount(count + 1)}>Click me</button>
+			{loading ? <div>...loading</div> : <div>{data.name.first}</div>}
 		</div>
 	);
 };
