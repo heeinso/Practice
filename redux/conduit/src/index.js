@@ -17,8 +17,32 @@ const reducer = (state = defaultState, action) => {
 const store = createStore(reducer);
 
 class App extends React.Component {
+	constructor() {
+		super();
+		this.state = {};
+	}
+
+	componentWillMount() {
+		store.subscribe(() => this.setState(store.getState()));
+	}
+
+	handleClick = () => store.dispatch({ type: 'TOGGLE' });
+
 	render() {
-		return <h1>Hello, World!</h1>;
+		return (
+			<div>
+				<h1>TODO</h1>
+				<div>
+					Learn Redux&nbsp;
+					<input
+						type="checkbox"
+						checked={!!this.state.checked}
+						onClick={this.handleClick}
+					/>
+				</div>
+				{this.state.checked && <h2>Done!</h2>}
+			</div>
+		);
 	}
 }
 
