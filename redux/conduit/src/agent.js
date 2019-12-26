@@ -24,6 +24,11 @@ const requests = {
 			.post(`${API_ROOT}${url}`, body)
 			.use(tokenPlugin)
 			.then(responseBody),
+	put: (url, body) =>
+		superagent
+			.put(`${API_ROOT}${url}`, body)
+			.use(tokenPlugin)
+			.then(responseBody),
 };
 
 const Articles = {
@@ -34,6 +39,9 @@ const Auth = {
 	current: () => requests.get(`/user`),
 	login: (email, password) =>
 		requests.post(`/user/login`, { user: { email, password } }),
+	register: (username, email, password) =>
+		requests.post('/users', { user: { username, email, password } }),
+	save: user => requests.put('/user', { user }),
 };
 
 export default {
