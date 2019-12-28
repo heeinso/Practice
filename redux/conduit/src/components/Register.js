@@ -23,6 +23,7 @@ const mapDispatchToProps = dispatch => ({
 
 class Register extends React.Component {
 	constructor() {
+		super();
 		this.changeEmail = e => this.props.onChangeEmail(e.target.value);
 		this.changePassword = e => this.props.onChangePassword(e.target.value);
 		this.changeUsername = e => this.props.onChangeUsername(e.target.value);
