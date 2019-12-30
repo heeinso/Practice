@@ -1,21 +1,27 @@
 import React from 'react';
 
 import ArticlePreview from './ArticlePreview';
+import ListPagination from './ListPagination';
 
-const ArticleList = props => {
-	if (!props.articles) {
+const ArticleList = ({ articles, articlesCount, currentPage, onSetPage }) => {
+	if (!articles) {
 		return <div className="article-preview">Loading...</div>;
 	}
 
-	if (props.articles.length === 0) {
+	if (articles.length === 0) {
 		return <div className="article-preview">No articles are here... yet.</div>;
 	}
 
 	return (
 		<div>
-			{props.articles.map(article => (
+			{articles.map(article => (
 				<ArticlePreview key={article.slug} article={article} />
 			))}
+			<ListPagination
+				articlesCount={articlesCount}
+				currentPage={currentPage}
+				onSetPage={onSetPage}
+			/>
 		</div>
 	);
 };
