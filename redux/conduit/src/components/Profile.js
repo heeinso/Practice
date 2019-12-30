@@ -62,13 +62,14 @@ const mapDispatchToProps = dispatch => ({
 			type: 'FOLLOW_USER',
 			payload: agent.Profile.follow(username),
 		}),
-	onLoad: payload => dispatch({ type: 'PROFILE_PAGE_LOADED', payload }),
 	onUnfollow: username =>
 		dispatch({
 			type: 'UNFOLLOW_USER',
 			payload: agent.Profile.unfollow(username),
 		}),
+	onLoad: payload => dispatch({ type: 'PROFILE_PAGE_LOADED', payload }),
 	onUnload: () => dispatch({ type: 'PROFILE_PAGE_UNLOADED' }),
+	onSetPage: (page, payload) => dispatch({ type: 'SET_PAGE', page, payload }),
 });
 
 class Profile extends React.Component {
@@ -107,6 +108,11 @@ class Profile extends React.Component {
 		);
 	}
 
+	onSetPage(page) {
+		const promise = agent.Articles.byAuthor(this.props.profile.username, page);
+		this.props.onSetPage(page, promise);
+	}
+
 	render() {
 		const { profile, currentUser, onFollow, onUnfollow, articles } = this.props;
 		if (!profile) {
@@ -142,7 +148,12 @@ class Profile extends React.Component {
 						<div className="col-xs-12 col-md-10 offset-md-1">
 							<div className="articles-toggle">{this.renderTabs()}</div>
 
-							<ArticleList articles={articles} />
+							<ArticleList
+								articles={this.props.articles}
+								articlesCount={this.props.articlesCount}
+								currentPage={this.props.currentPage}
+								onSetPage={this.onSetPage}
+							/>
 						</div>
 					</div>
 				</div>
