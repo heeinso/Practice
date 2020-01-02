@@ -1,6 +1,18 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { render } from "react-dom";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
 
-import App from "./App";
+import reducer from "./reducers";
+import generateTree from "./generateTree";
+import Node from "./containers/Node";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+const tree = generateTree();
+const store = createStore(reducer, tree);
+
+render(
+  <Provider store={store}>
+    <Node id={0} />
+  </Provider>,
+  document.getElementById("root")
+);
