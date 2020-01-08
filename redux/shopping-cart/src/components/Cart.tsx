@@ -3,7 +3,7 @@ import React from "react";
 import Product from "./Product";
 
 const Cart = ({ products, total, onCheckoutClicked }) => {
-  const hasProducts = products.length > 0;
+  const hasProducts = !!products ? products.length > 0 : false;
   const nodes = hasProducts ? (
     products.map(product => (
       <Product

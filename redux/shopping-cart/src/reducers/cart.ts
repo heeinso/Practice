@@ -12,6 +12,7 @@ const initialState = {
 const addedIds = (state = initialState.addedIds, action) => {
   switch (action.type) {
     case ADD_TO_CART:
+      // @ts-ignore
       if (state.indexOf(action.productId) !== -1) {
         return state;
       }
