@@ -4,5 +4,5 @@ export interface ProductItem {
   description: string;
   price: number;
   imageUrl: string;
-  added?: boolean;
+  count?: number;
 }
