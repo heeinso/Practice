@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const Basket = () => {
+export const Basket = () => {
   const classes = useStyles({});
   const products = useSelector((state: ProductItem[]) => state);
 

@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const Product = () => {
+export const Product = () => {
   const classes = useStyles({});
   const products = useSelector((state: ProductItem[]) => state);
 
