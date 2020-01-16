@@ -7,7 +7,8 @@ const INITIAL_STATE: ProductItem[] = [
     description:
       "No fancy sizing charts here, one t-shirt size to rule them all",
     imageUrl: "/blue-tshirt.png",
-    price: 399
+    price: 399,
+    count: 0
   },
   {
     id: "456",
@@ -15,7 +16,8 @@ const INITIAL_STATE: ProductItem[] = [
     description:
       "This unique t-shirt is guaranteed to fit nobody, not even new born babies",
     imageUrl: "/yellow-tshirt.png",
-    price: 499
+    price: 499,
+    count: 0
   },
   {
     id: "789",
@@ -23,7 +25,8 @@ const INITIAL_STATE: ProductItem[] = [
     description:
       "The only product on our site that might actually be worth buying",
     imageUrl: "/red-tshirt.png",
-    price: 799
+    price: 799,
+    count: 0
   }
 ];
 

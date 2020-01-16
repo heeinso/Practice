@@ -13,7 +13,7 @@ const basketSlice = createSlice({
         }
         return {
           ...item,
-          added: true
+          count: action.payload.count + 1
         };
       }),
     remove: (state, action) =>
@@ -24,7 +24,7 @@ const basketSlice = createSlice({
 
         return {
           ...item,
-          added: false
+          count: 0
         };
       })
   }
