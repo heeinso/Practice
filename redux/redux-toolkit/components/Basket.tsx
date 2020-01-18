@@ -47,12 +47,13 @@ export const Basket = () => {
         Shopping Basket
       </Typography>
       <Typography component="p" variant="body1">
-        You have {products.filter(product => product.added).length} items in
-        your basket
+        You have
+        {products.reduce((prev: any, curr: any) => prev.count + curr.count, 0)}
+        Colored your basket
       </Typography>
       <List className={classes.root}>
         {products
-          .filter(product => product.added)
+          .filter(product => product.count > 0)
           .map((product: ProductItem) => (
             <React.Fragment key={product.id}>
               <ListItem alignItems="flex-start">
@@ -75,6 +76,14 @@ export const Basket = () => {
                     </React.Fragment>
                   }
                 />
+                <ListItemText
+                  primary={product.count}
+                  style={{
+                    textAlign: "end",
+                    paddingTop: "12px",
+                    paddingRight: "5px"
+                  }}
+                />
                 <ListItemSecondaryAction>
                   <IconButton
                     edge="end"
@@ -93,8 +102,11 @@ export const Basket = () => {
             &pound;
             {(
               products
-                .filter(product => product.added)
-                .reduce((acc, current) => (acc += current.price), 0) / 100
+                .filter(product => product.count > 0)
+                .reduce(
+                  (acc, current) => (acc += current.price * current.count),
+                  0
+                ) / 100
             ).toFixed(2)}
           </Typography>
         </ListItem>

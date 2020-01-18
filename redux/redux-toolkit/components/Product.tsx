@@ -95,7 +95,6 @@ export const Product = () => {
           className={classes.image}
           focusRipple
           focusVisibleClassName={classes.focusVisible}
-          disabled={product.added}
           onClick={() => store.dispatch(add(product))}
           style={{
             width: `${100 / products.length}%`
