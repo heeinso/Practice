@@ -27,3 +27,37 @@
 ### never
 
 > 아무런 값도 가질 수 없는 타입
+
+## 배열과 튜플
+
+### 배열
+
+```typescript
+const pibonacci: number[] = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55];
+const myFavoriteBeers: string[] = [
+  "Imperial Stout",
+  "India Pale Ale",
+  "Weizenbock",
+];
+
+// OR
+
+const pibonacci: Array<number> = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55];
+const myFavoriteBeers: Array<string> = [
+  "Imperial Stout",
+  "India Pale Ale",
+  "Weizenbock",
+];
+```
+
+### 튜플
+
+> 원소의 수와 각 원소의 타입이 정확히 지정된 배열의 타입을 정의 가능
+> 만약 타입 정의보다 더 많은, 혹은 더 적은 원소를 갖는 배열을 할당한다면 에러 발생
+
+```typescript
+const invalidNameAndHeight: [string, number] = ["abc", 176, 42];
+// error TS2322: Type '[string, number, boolean]' is not assignable to type '[string, number]'.
+//   Types of property 'length' are incompatible.
+//     Type '3' is not assignable to type '2'.
+```
