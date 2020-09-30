@@ -65,8 +65,10 @@ number$.subscribe({
 ```javascript
 const { Observable } = rxjs;
 const interval$ = new Observable(function subscribe(observer) {
+  let i = 1;
   const id = setInterval(function () {
-    observer.next(new Date().toString());
+    observer.next(i);
+    i++;
   }, 1000);
   // 자원을 해제하는 함수
   return function () {
@@ -81,4 +83,13 @@ const subscription = interval$.subscribe((v) => console.log(v));
 setTimeout(function () {
   subscription.unsubscribe();
 }, 5000);
+
+// 1
+// 2
+// 3
+// 4
+// 5
+// 6
+// 7
+// interval 제거
 ```
