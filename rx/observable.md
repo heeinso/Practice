@@ -99,3 +99,25 @@ setTimeout(function () {
 > **디바운스와 쓰로틀**
 > 디바운스는 요청이 반복되는 시간에는 요청을 방지하고 요청이 멈추었을 때 마지막 요청을 설정한 시간이 지난 이후에 요청하는 프로그래밍 기술이다.
 > 쓰로틀은 많은 요청이 오더라도 설정한 시간 내에 딱 한 번 호출되도록 만드는 프로그래밍 기술이다.
+
+```javascript
+const { fromEvent } = rxjs;
+const {
+  map,
+  mergeMap,
+  debounceTime,
+  filter,
+  distinctUntilChanged,
+} = rxjs.operators;
+const { ajax } = rxjs.ajax;
+
+const user$ = fromEvent(document.getElementById("search"), "keyup").pipe(
+  debounceTime(300), // 300ms 뒤에 데이터를 전달한다.
+  map((event) => event.target.value),
+  distinctUntilChanged(), // 특수키가 입력된 경우에는 나오지 않기 위해 중복 데이터 처리
+  filter((query) => query.trim().length > 0),
+  mergeMap((query) =>
+    ajax.getJSON(`https://api.github.com/search/users?q=${query}`)
+  )
+);
+```
