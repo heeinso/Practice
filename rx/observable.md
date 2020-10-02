@@ -100,6 +100,16 @@ setTimeout(function () {
 > 디바운스는 요청이 반복되는 시간에는 요청을 방지하고 요청이 멈추었을 때 마지막 요청을 설정한 시간이 지난 이후에 요청하는 프로그래밍 기술이다.
 > 쓰로틀은 많은 요청이 오더라도 설정한 시간 내에 딱 한 번 호출되도록 만드는 프로그래밍 기술이다.
 
+### Cold Observable과 Hot Observable
+
+| 구분                  | Cold Observable                          | Hot Observable                                                     |
+| --------------------- | ---------------------------------------- | ------------------------------------------------------------------ |
+| 데이터 주체 생성 시기 | Observable 내부                          | Observable 외부                                                    |
+| Observer와의 관계     | 1:1                                      | 1:N                                                                |
+| 데이터 영역           | Observer마다 독립적                      | N개의 Observer와 공유                                              |
+| 데이터 전달 시점      | 구독하는 순간부터 데이터를 전달하기 시작 | 구독과 상관없이 데이터를 중간부터 전달                             |
+| RxJS 객체             | Observable                               | fromEvent에 의해 생성된 Observable, ConnectableObservable, Subject |
+
 ```javascript
 const { fromEvent } = rxjs;
 const {
